@@ -1,0 +1,85 @@
+<!-- src/app/chat/chat.component.html -->
+
+
+
+<div class="w-full h-full flex justify-center items-center animacao ">
+
+
+
+
+  @if (!esconderLogin) {
+    <div class="card p-6 grid grid-cols-2 gap-8 ">
+      <div class="flex flex-col justify-center  items-center">
+        <span class="text-white text-center text-4xl uppercase font-bold">Seja Bem vindo!</span>
+        <span class="text-white/80 text-xs font-light">Digite seu nome para entrar.</span>
+
+        <span class="p-float-label w-full mt-6">
+          <input id="nome" type="text" pInputText [(ngModel)]="name" />
+          <label for="nome" class="font-medium text-primary-color-2">{{ "Nome" }}</label>
+        </span>
+
+        <button (click)="entrar()" [disabled]="!name || name === ''" class="primary-button w-full h-[2.3rem] text-xl mt-4">Entrar</button>
+
+      </div>
+
+      <div class="h-full w-full flex items-center justify-center ">
+        <img src="logoInicial.png" class="w- max-h-[20rem] h-auto w-auto" alt="">
+      </div>
+    </div>
+  } @else {
+    <div class="absolute card_secondary rounded-md px-4 py-2 top-4 right-4 text-white items-center text-xs flex flex-col gap-1">
+      <span class="flex gap-1 items-center uppercase text-lg">  Usuários</span>
+
+      @for (user of connectedUsers; track $index) {
+
+        <div class="flex items-center gap-2 card p-1 w-full max-w-[10rem] animacao">
+          <div class="h-3 w-3 rounded-full bg-c-success"></div>
+          <span class=" text-overflow">{{ user }}</span>
+        </div>
+
+      }
+    </div>
+    <div class="card w-[60%] h-[29rem] p-6 animacao">
+      <div class="flex flex-col h-full">
+        <div class="flex flex-col items-center">
+          <span class="text-white text-center text-4xl uppercase font-bold">Será que sabe?</span>
+          <span class="text-white/80 text-xs font-light">Descubra o nome da palavra antes de acabar suas chances.</span>
+        </div>
+
+        <div class="h-full flex flex-col justify-end ">
+          <div class="max-h-[14.4rem] overflow-y-scroll flex flex-col gap-3 pr-2">
+            @for (msg of messages; track $index) {
+              <div class="flex gap-2 animacao">
+                <div class="h-[2.3rem] w-[2.3rem] min-h-[2.3rem] min-w-[2.3rem] flex items-center justify-center card_secondary rounded-full text-white font-extrabold"> {{criaIcone(msg.sender)}}</div>
+
+                <div class="card px-3 w-full flex items-center text-primary-color-2 text-xs">
+                  {{ msg.text }}
+                </div>
+              </div>
+            }
+          </div>
+        <div class="flex gap-2 items-end">
+          <span class="p-float-label w-full mt-6">
+            <input id="mensagem" type="text" pInputText [(ngModel)]="message" />
+            <label for="mensagem" class="font-medium text-primary-color-2">{{ "Mensagem" }}</label>
+          </span>
+
+          <button (click)="sendMessage()" [disabled]="!message && message === ''" class="primary-button px-2 h-[2.3rem]">Enviar</button>
+        </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+
+
+  }
+
+</div>
+
+
+
