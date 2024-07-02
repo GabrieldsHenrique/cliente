@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../core/socket.service';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,18 +19,39 @@ export class ChatComponent implements OnInit, OnDestroy {
   esconderLogin: boolean = false;
   userCount: number = 0;
   connectedUsers: string[] = [];
+ palavraAtual = ''
+
 
   constructor(private socketService: SocketService) {}
 
+  @ViewChild('messageContainer') private messageContainer?: ElementRef;
+
+  el = inject(ElementRef)
+ esconder = true
   ngOnInit() {
     this.socketService.onMessage().subscribe((message) => {
       this.messages.push(message);
+      setTimeout(() =>{
+        this.scrollToBottom()
+      },200)
+
+    });
+
+    this.socketService.onPalavraAtual().subscribe((palavra: string) => {
+      this.palavraAtual = palavra;
     });
 
     this.socketService.onUserCount().subscribe((data) => {
       this.userCount = data.count;
       this.connectedUsers = data.users;
     });
+  }
+
+
+  scrollToBottom(): void {
+    if(this.messageContainer){
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight +30;
+    }
   }
 
   entrar() {

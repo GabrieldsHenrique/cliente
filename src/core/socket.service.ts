@@ -9,7 +9,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://192.168.1.14:3000');
+    this.socket = io('http://200.235.90.15:3000');
     this.socket.on('connect', () => {
       console.log('Conectado ao servidor de WebSocket');
     });
@@ -55,5 +55,13 @@ export class SocketService {
   disconnect() {
     console.log('Desconectando do servidor de WebSocket');
     this.socket.disconnect();
+  }
+
+  onPalavraAtual(): Observable<string> {
+    return new Observable<string>(observer => {
+      this.socket.on('palavraAtual', (data: string) => {
+        observer.next(data);
+      });
+    });
   }
 }
